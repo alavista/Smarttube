@@ -11,3 +11,12 @@ Project for the "Tube challenge" submitted for the ITQ Smart Green Island Makeat
 # Maybes
 * Implement BLE support
 * Implement sleep button
+
+# API
+"http://192.168.4.1/<API-call>
+  
+  * reset: Reset current droplet count
+  * inc: Increase count by one
+  * count: Returns current droplet count
+  * ident: Returns mediaction identification (Dummy)
+  * exp: Returns expiration date (Dummy)
