@@ -13,10 +13,9 @@ Project for the "Tube challenge" submitted for the ITQ Smart Green Island Makeat
 * Implement sleep button
 
 # API
-"http://192.168.4.1/<API-call>"
-  
-  * reset: Reset current droplet count
-  * inc: Increase count by one
-  * count: Returns current droplet count
-  * ident: Returns mediaction identification (Dummy)
-  * exp: Returns expiration date (Dummy)
+* http://192.168.4.1/reset: Reset current droplet count, returns success
+* http://192.168.4.1/inc: Increase count by one, returns increased
+* http://192.168.4.1/count: Returns current droplet count
+* http://192.168.4.1/ident: Returns mediaction identification (Dummy)
+* http://192.168.4.1/exp: Returns expiration date (Dummy)
+* http://192.168.4.1/set/value: Sets count to "value" (Integer), returns success or failure
