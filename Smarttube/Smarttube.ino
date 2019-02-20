@@ -2,7 +2,6 @@
 #include <FS.h>
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
-#include <ArduinoOTA.h>
 #include <ESPmDNS.h>
 #include <WiFiUdp.h>
 
@@ -30,7 +29,7 @@ void setup(){
     char cstr[16];
     itoa(count, cstr, 10);
     AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", cstr);
-    response->addHeader("Server","Innere Beleuchtung");
+    response->addHeader("Server","Dropcount");
     int paramsNr = request->params();
     Serial.println(count);
  
@@ -41,7 +40,7 @@ void setup(){
 
   server.on("/reset", HTTP_GET, [](AsyncWebServerRequest *request){
     AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", "success");
-    response->addHeader("Server","Äußere Beleuchtung");
+    response->addHeader("Server","Resetcount");
     int paramsNr = request->params();
     //Serial.println(paramsNr);
     count = 0;
@@ -50,7 +49,7 @@ void setup(){
 
    server.on("/inc", HTTP_GET, [](AsyncWebServerRequest *request){
     AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", "incremented");
-    response->addHeader("Server","Äußere Beleuchtung");
+    response->addHeader("Server","Increment");
     int paramsNr = request->params();
     count = count +1;
     Serial.println(count);
@@ -59,7 +58,7 @@ void setup(){
 
   server.on("/ident", HTTP_GET, [](AsyncWebServerRequest *request){
     AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", "Medication ID");
-    response->addHeader("Server","Äußere Beleuchtung");
+    response->addHeader("Server","MID");
     int paramsNr = request->params();
     count = count +1;
     Serial.println(count);
@@ -68,7 +67,7 @@ void setup(){
 
   server.on("/exp", HTTP_GET, [](AsyncWebServerRequest *request){
     AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", "Expiration Date");
-    response->addHeader("Server","Äußere Beleuchtung");
+    response->addHeader("Server","Expiration");
     int paramsNr = request->params();
     count = count +1;
     Serial.println(count);
@@ -79,6 +78,5 @@ void setup(){
 }
  
 void loop(){
-  ArduinoOTA.handle();
   }
 
