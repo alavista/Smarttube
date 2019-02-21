@@ -100,11 +100,13 @@ server.on("/get", HTTP_GET, [](AsyncWebServerRequest *request){
           itoa(gcount, send_data,10);
           };
         if(p->name()=="count"){
-          //int gcount = memory lookup (Offset,p->value())
-          Serial.println("Got Gcount from Memory");
-          Serial.println(count);
-          itoa(count, send_data,10);
-          };
+          if(p->value()==""){
+             itoa(readval(ID,7), send_data,10);
+            }
+          else if(p->value().toInt()!=0){
+            //MemoryManager.read(ID, Offset)
+            itoa(readval(p->value().toInt(),7), send_data,10);
+            }}
         if(p->name()=="reset"){
           //int gcount = memory lookup (Offset,p->value())
           Serial.println("Got Gcount from Memory");
@@ -112,9 +114,7 @@ server.on("/get", HTTP_GET, [](AsyncWebServerRequest *request){
           };
         if(p->name()=="inc"){
           //int gcount = memory lookup (Offset,p->value())
-          Serial.println("Got Gcount from Memory");
           count = count + 1;
-          writeval(ID, 7, count)
           };
         Serial.println("------");
     }
