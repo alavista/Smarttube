@@ -4,6 +4,8 @@
 #include <ESPAsyncWebServer.h>
 #include <ESPmDNS.h>
 #include <WiFiUdp.h>
+#include "EEPROM.h"
+
 //#include <Dropcounter.h>
 //#include <Memorymanager.h>
 
@@ -14,10 +16,22 @@
 int count = 0;
 int IndentID= 0;
 int gcount = 0;
+int addr = 0;
+int ID = 4;
+#define EEPROM_SIZE 512
+
+    int readval(int ID, int Offset){
+      Serial.print(byte(EEPROM.read(ID*16+Offset))); Serial.print(" ");
+    return ID+Offset;
+    }
+
+    void writeval(int ID, int Offset, int val){
+      EEPROM.write(ID*16+Offset, val);
+      EEPROM.commit();
+    }
 
 
 AsyncWebServer server(80);
-
 
  
 void setup(){
@@ -29,9 +43,11 @@ void setup(){
   Serial.print("IP address: ");
   Serial.println(WiFi.softAPIP());
 
-
-
-
+   Serial.println("start...");
+  if (!EEPROM.begin(EEPROM_SIZE))
+  {
+    Serial.println("failed to initialise EEPROM"); delay(1000000);
+  }
  
 server.on("/get", HTTP_GET, [](AsyncWebServerRequest *request){
     char send_data[16]="";
@@ -64,7 +80,7 @@ server.on("/get", HTTP_GET, [](AsyncWebServerRequest *request){
             }
           else if(p->value().toInt()!=0){
             //MemoryManager.read(ID, Offset)
-            MemoryManager.read(
+            itoa(readval(p->value().toInt(),2), send_data,10);
             }
           
           //int gcount = memory lookup (Offset,p->value())
@@ -98,6 +114,7 @@ server.on("/get", HTTP_GET, [](AsyncWebServerRequest *request){
           //int gcount = memory lookup (Offset,p->value())
           Serial.println("Got Gcount from Memory");
           count = count + 1;
+          writeval(ID, 7, count)
           };
         Serial.println("------");
     }
