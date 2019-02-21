@@ -18,11 +18,6 @@ int gcount = 0;
 
 AsyncWebServer server(80);
 
-int DropCounter(){
-    sleep(2000);
-    Serial.println("Internal count");
-    return 1;
-  }
 
  
 void setup(){
