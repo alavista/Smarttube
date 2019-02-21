@@ -57,10 +57,10 @@ void setup(){
   });
 
   server.on("/ident", HTTP_GET, [](AsyncWebServerRequest *request){
+    
     AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", "Medication ID");
     response->addHeader("Server","MID");
     int paramsNr = request->params();
-    count = count +1;
     Serial.println(count);
     request->send(response);
   });
@@ -78,5 +78,6 @@ void setup(){
 }
  
 void loop(){
+  
   }
 
