@@ -24,12 +24,13 @@ Project for the "Tube challenge" submitted for the ITQ Smart Green Island Makeat
 # EEPROM structure
 * 16 byte Blocksize
 Starting adress is (Device ID*16)
-| Byte          | Content |
-| ------------- | ------------- |
-| 0             | DeviceID      |
-| 1             | Expiration Year |
-| 2             | Expiration Month|
-| 3             | tmpDropcount |
-| 4,5           | glocalDropcount|
-| 6             | UserID|
-| 7-15          | Free|
+<br/>
+| Byte | Content |
+| --- | --- |
+| 0 | DeviceID |
+| 1 | Expiration Year |
+| 2 | Expiration Month |
+| 3 | tmpDropcount |
+| 4,5 | glocalDropcount |
+| 6 | UserID |
+| 7 | count |
