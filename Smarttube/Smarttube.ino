@@ -59,10 +59,18 @@ server.on("/get", HTTP_GET, [](AsyncWebServerRequest *request){
           itoa(3, send_data,10);
           };
         if(p->name()=="EXP"){
+          if(p->value()==""){
+             itoa(13, send_data,10);
+            }
+          else if(p->value().toInt()!=0){
+            //MemoryManager.read(ID, Offset)
+            MemoryManager.read(
+            }
+          
           //int gcount = memory lookup (Offset,p->value())
           Serial.println("Got Gcount from Memory");
           // Static Value, change
-          itoa(13, send_data,10);
+         
           };
         if(p->name()=="UserID"){
           //int gcount = memory lookup (Offset,p->value())
