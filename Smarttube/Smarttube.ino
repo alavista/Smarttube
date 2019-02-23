@@ -10,10 +10,16 @@
 //#include <Memorymanager.h>
 
 //Wifi 
-//const char *ssid = "Smarttube";
+//const char *ssid = "Smarttube2";
 //const char *password = "GC2019";
 
 const char ui_html[] PROGMEM = "<!DOCTYPE html><html><style>h3{color: black; font-family: verdana; font-size: 300%;}a:link, a:visited{width: 100%; background-color: #4CAF50; color: white; padding: 14px 20px; margin: 8px 0; border: none; border-radius: 4px; cursor: pointer;}a:hover, a:active{background-color: #45a049;}input[type=number]{width: 100%; padding: 12px 20px; margin: 8px 0; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;}input[type=submit]{width: 100%; background-color: #4CAF50; color: white; padding: 14px 20px; margin: 8px 0; border: none; border-radius: 4px; cursor: pointer;}input[type=submit]:hover{background-color: #45a049;}div{border-radius: 5px; background-color: #f2f2f2; padding: 20px;}</style><body><h3>Farbwerte fuer inneren Ring</h3><div> <form> <label for=\"red\">Red</label> <input type=\"number\" id=\"fname\" name=\"red\" placeholder=\"0\" min=\"0\" max=\"255\"><label for=\"green\">Green</label> <input type=\"number\" id=\"green\" name=\"green\" placeholder=\"0\" min=\"0\" max=\"255\"> <label for=\"blue\">Blue</label> <input type=\"number\" id=\"blue\" name=\"blue\" placeholder=\"0\" min=\"0\" max=\"255\"> <label for=\"white\">White</label> <input type=\"number\" id=\"white\" name=\"white\" placeholder=\"0\" min=\"0\" max=\"255\"> <input type=\"submit\" value=\"Submit\"> </form></div><div><a href=\"/\">Main</a></div><div><a href=\"/LED1\">Innen</a></div><div><a href=\"/LED2\">Aussen</a></div></body></html>";
+const char HTML[] PROGMEM = "<!DOCTYPE html><html><style>input[type=text], input[type=number], select{width: 200px; padding: 12px 20px; margin: 8px 0; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;}input[type=submit]{width: 200px; background-color: #4CAF50; color: white; padding: 14px 20px; margin: 8px 0; border: none; border-radius: 4px; cursor: pointer;}input[type=submit]:hover{background-color: #45a049;}div{display: flex; justify-content: center; border-radius: 5px; background-color: #f2f2f2; padding: 20px;}body{font-family: Verdana,sans-serif;}</style><body><div> <form action=\"\"> <label for=\"pname\">Patient</label><br/> <input type=\"text\" id=\"pname\" name=\"patientname\" placeholder=\"Patient name..\" size=10><br/> <label for=\"medId\">Medicine</label><br/> <select id=\"medID\" name=\"medID\"> <option value=\"0\">Procrastinozin</option> <option value=\"1\">Makeathetamol</option> <option value=\"2\">ITQdipine</option> </select><br/> <label for=\"dose\">Drops</label><br/> <input type=\"number\" id=\"dose\" name=\"dose\" placeholder=\"0\"><br/> <input type=\"submit\" value=\"Submit\"> </form></div></body></html>";
+
+String patientName = "";
+int medicine = -1;
+int drops = -1;
+
 
 
 int count = 0;
@@ -29,7 +35,7 @@ AsyncWebServer server(80);
 void setup(){
   Serial.begin(115200);
  
-  WiFi.softAP("Smarttube", "");
+  WiFi.softAP("Smarttube2", "");
  
   Serial.println();
   Serial.print("IP address: ");
@@ -171,11 +177,44 @@ server.on("/get", HTTP_GET, [](AsyncWebServerRequest *request){
   });
 
   server.on("/ui", HTTP_GET, [](AsyncWebServerRequest *request){
-    AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", ui_html);
-    response->addHeader("Server","Expiration");
+    AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", HTML);
+    response->addHeader("Server","Innere Beleuchtung");
     int paramsNr = request->params();
-    count = count +1;
-    Serial.println(count);
+    Serial.println(paramsNr);
+ 
+    for(int i=0;i<paramsNr;i++){
+         
+        AsyncWebParameter* p = request->getParam(i);
+        Serial.print("Param name: ");
+        Serial.println(p->name());
+        Serial.print("Param value: ");
+        Serial.println(p->value());
+        
+        if(p->name()=="patientname"){
+          patientName = p->value();
+          Serial.print("patient name: ");
+          Serial.println(patientName);
+          
+          //red1 = p->value().toInt();
+          //Serial.println("red set");
+        
+        }else if(p->name()=="medID"){
+          medicine = p->value().toInt();
+          Serial.print("medicine: ");
+          Serial.println(medicine);
+          
+          //green1 = p->value().toInt();
+          //Serial.println("green set");
+          
+        }else if(p->name()=="dose"){
+          drops = p->value().toInt();
+          Serial.print("drops: ");
+          Serial.println(drops);
+          
+          //blue1 = p->value().toInt();
+          //Serial.println("blue set");
+          }
+    }
     request->send(response);
   });
  
@@ -204,4 +243,3 @@ void loop(){
     };
   }
   
-
