@@ -192,14 +192,15 @@ server.on("/get", HTTP_GET, [](AsyncWebServerRequest *request){
 void loop(){
  int Reading = analogRead(34);
  //Serial.println(Reading);
-  if( Reading <= 3500){
+ //Serial.println(count);
+  if( Reading <= 100){
     count=count+1;
-    delay(50);
     Serial.println(1);
+    delay(200);  
     }
   else{
     Serial.println(0);
-    delay(50);
+    delay(20);
     };
   }
   
